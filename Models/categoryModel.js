@@ -7,7 +7,7 @@ const categorySchema = new mongoose.Schema(
       require: [true, "category required"],
       unique: [true, "category must be required"],
       minlength: [3, "too short category name"],
-      maxlength: [3, "too long category name"],
+      maxlength: [10, "too long category name"],
     },
     slug: {
       type: "string",

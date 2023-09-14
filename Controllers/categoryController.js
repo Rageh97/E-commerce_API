@@ -28,12 +28,38 @@ exports.getCategory = asyncHandler(async (req, res) => {
 // @route GET api/v1/categories/:id
 // @access public
 exports.getSpecificCategory = asyncHandler(async (req, res) => {
-  // pagination
   const { id } = req.params;
-
   const category = await CategoryModel.findById(id);
   if (!category) {
     res.status(404).json({ msg: `No category for this id ${id}` });
   }
-  res.status(200).json({data: category})
+  res.status(200).json({ data: category });
+});
+// @desc update specific category
+// @route PUT api/v1/categories/:id
+// @access private
+exports.updateCategory = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  const category = await CategoryModel.findOneAndUpdate(
+    { _id: id },
+    { name, slug: slugify(name) },
+    { new: true }
+  );
+  if (!category) {
+    res.status(404).json({ msg: `No category for this id ${id}` });
+  }
+  res.status(200).json({ data: category });
+});
+// @desc delete category
+// @route DELETE api/v1/categories/:id
+// @access private
+exports.deleteCategory = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const category = await CategoryModel.findByIdAndDelete(id);
+  if (!category) {
+    res.status(404).json({ msg: `No category for this id ${id}` });
+  }
+  res.status(204).send();
 });

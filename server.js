@@ -11,7 +11,7 @@ const app = new express();
 app.use(express.json());
 const categoryRoute = require("./Routes/categoryRoute");
 const subCategoryRoute = require("./Routes/subCategoryRoute");
-const productRoute = require("./Routes/productRoute");
+// const productRoute = require("./Routes/productRoute");
 const dbConnection = require("./Config/database");
 const ApiError = require("./Utils/apiError");
 const globalError = require("./Middlewares/errorMiddleware");
@@ -24,12 +24,12 @@ if (process.env.NODE_ENV === "development") {
 // routes
 app.use("/api/v1/categories", categoryRoute);
 app.use("/api/v1/subcategories", subCategoryRoute);
-app.use("/api/v1/products", productRoute);
+// app.use("/api/v1/products", productRoute);
 // Handle Routes not found
 app.all("*", (err, req, res, next) => {
   next(new ApiError(`can't find this route: ${req.originalUrl}`, 400));
 });
-// global error handler
+// global error handler 
 app.use(globalError);
 // port
 const server = app.listen(PORT, () => {

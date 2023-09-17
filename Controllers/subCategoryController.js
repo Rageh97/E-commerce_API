@@ -3,10 +3,10 @@ const slugify = require("slugify");
 const SubCategory = require("../Models/subCategoryModel");
 const ApiError = require("../Utils/apiError");
 
-exports.setCategoryIdToBody = (res, req, next) => {
+exports.setCategoryIdToBody = (req, res, next) => {
   // nested route
   if (!req.body.category) req.body.category = req.params.categoryId;
-  next()
+  next();
 };
 // @desc create subcategory
 // @route POST api/v1/subcategories

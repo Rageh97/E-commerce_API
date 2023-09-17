@@ -9,7 +9,7 @@ exports.createSubCategoryValidator = [
     .withMessage("Too short Subcategory name")
     .isLength({ max: 30 })
     .withMessage("Too long Subcategory name"),
-  check("category").isEmpty().withMessage("subcategory must be belong to category").isMongoId().withMessage("Invalid category id format"),
+  check("category").notEmpty().withMessage("subcategory must be belong to category").isMongoId().withMessage("Invalid category id format"),
   validatorMiddleware,
 ];
 exports.getSubCategoryValidator = [

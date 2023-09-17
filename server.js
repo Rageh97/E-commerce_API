@@ -1,26 +1,32 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+
 dotenv.config({ path: "config.env" });
-const PORT = process.env.PORT;
+const { PORT } = process.env;
+
+// eslint-disable-next-line new-cap
 const app = new express();
+
 app.use(express.json());
 const categoryRoute = require("./Routes/categoryRoute");
+const subCategoryRoute = require("./Routes/subCategoryRoute");
 const productRoute = require("./Routes/productRoute");
 const dbConnection = require("./Config/database");
 const ApiError = require("./Utils/apiError");
-const globalError = require("./Middlewares/globalError");
+const globalError = require("./Middlewares/errorMiddleware");
 // connect db
 dbConnection();
 // mode
-if (process.env.NODE_ENV == "development") {
+if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 // routes
 app.use("/api/v1/categories", categoryRoute);
+app.use("/api/v1/subcategories", subCategoryRoute);
 app.use("/api/v1/products", productRoute);
-
-app.all("*", (err, req, res) => {
+// Handle Routes not found
+app.all("*", (err, req, res, next) => {
   next(new ApiError(`can't find this route: ${req.originalUrl}`, 400));
 });
 // global error handler

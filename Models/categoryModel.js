@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const categorySchema = new mongoose.Schema(
   {
     name: {
-      type: "string",
+      type: String,
       require: [true, "category required"],
       unique: [true, "category must be required"],
       minlength: [3, "too short category name"],
       maxlength: [30, "too long category name"],
     },
     slug: {
-      type: "string",
+      type: String,
       lowercase: true,
     },
     image: String,

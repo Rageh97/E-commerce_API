@@ -1,12 +1,12 @@
-const CategoryModel = require("../Models/categoryModel");
-const slugify = require("slugify");
 const asyncHandler = require("express-async-handler");
+const slugify = require("slugify");
+const CategoryModel = require("../Models/categoryModel");
 const ApiError = require("../Utils/apiError");
 // @desc create category
 // @route POST api/v1/categories
 // @access private
 exports.createCategory = asyncHandler(async (req, res) => {
-  const name = req.body.name;
+  const { name } = req.body;
 
   const category = await CategoryModel.create({
     name,
@@ -33,7 +33,7 @@ exports.getSpecificCategory = asyncHandler(async (req, res, next) => {
   const category = await CategoryModel.findById(id);
   if (!category) {
     // res.status(404).json({ msg: `No category for this id ${id}` });
-   return next(new ApiError(`No category for this id ${id}`, 404));
+    return next(new ApiError(`No category for this id ${id}`, 404));
   }
   res.status(200).json({ data: category });
 });
@@ -50,7 +50,7 @@ exports.updateCategory = asyncHandler(async (req, res, next) => {
   );
   if (!category) {
     // res.status(404).json({ msg: `No category for this id ${id}` });
-   return next(new ApiError(`No category for this id ${id}`, 404));
+    return next(new ApiError(`No category for this id ${id}`, 404));
   }
   res.status(200).json({ data: category });
 });
@@ -63,7 +63,7 @@ exports.deleteCategory = asyncHandler(async (req, res, next) => {
   const category = await CategoryModel.findByIdAndDelete(id);
   if (!category) {
     // res.status(404).json({ msg: `No category for this id ${id}` });
-  return  next(new ApiError(`No category for this id ${id}`, 404));
+    return next(new ApiError(`No category for this id ${id}`, 404));
   }
   res.status(204).send();
 });

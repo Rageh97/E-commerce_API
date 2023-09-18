@@ -1,5 +1,11 @@
 const express = require("express");
-const router = express.Router();
+
+const {
+  createProductValidator,
+  getProductValidator,
+  updateProductValidator,
+  deleteProductValidator,
+} = require("../Utils/Validators/productValidator");
 const {
   createProduct,
   getProducts,
@@ -7,9 +13,13 @@ const {
   updateProduct,
   deleteProduct,
 } = require("../Controllers/productController");
-router.route("/").post(createProduct).get(getProducts);
+
+const router = express.Router();
+
+router.route("/").get(getProducts).post(createProductValidator, createProduct);
 router
   .route("/:id")
-  .get(getSpecificProduct)
-  .put(updateProduct)
-  .delete(deleteProduct);
+  .get(getProductValidator, getSpecificProduct)
+  .put(updateProductValidator, updateProduct)
+  .delete(deleteProductValidator, deleteProduct);
+module.exports = router;

@@ -1,46 +1,45 @@
-// const fs = require("fs");
+const fs = require("fs");
+// eslint-disable-next-line import/no-extraneous-dependencies
+require("colors");
+const dotenv = require("dotenv");
+const Product = require("../../Models/productModel");
 
-// require("colors");
+const dbConnection = require("../../Config/database");
 
-// const dotenv = require("dotenv");
-// const Product = require("../../models/productModel");
+dotenv.config({ path: "../../config.env" });
 
-// const dbConnection = require("../../config/database");
+// connect to DB
+dbConnection();
 
-// dotenv.config({ path: "../../config.env" });
+// Read data
+const products = JSON.parse(fs.readFileSync("./products.json"));
 
-// // connect to DB
-// dbConnection();
+// Insert data into DB
+const insertData = async () => {
+  try {
+    await Product.create(products);
 
-// // Read data
-// const products = JSON.parse(fs.readFileSync("./products.json"));
+    console.log("Data Inserted".green.inverse);
+    process.exit();
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-// // Insert data into DB
-// const insertData = async () => {
-//   try {
-//     await Product.create(products);
+// Delete data from DB
+const destroyData = async () => {
+  try {
+    await Product.deleteMany();
+    console.log("Data Destroyed".red.inverse);
+    process.exit();
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-//     console.log("Data Inserted".green.inverse);
-//     process.exit();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// // Delete data from DB
-// const destroyData = async () => {
-//   try {
-//     await Product.deleteMany();
-//     console.log("Data Destroyed".red.inverse);
-//     process.exit();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// // node seeder.js -d
-// if (process.argv[2] === "-i") {
-//   insertData();
-// } else if (process.argv[2] === "-d") {
-//   destroyData();
-// }
+// node seeder.js -d
+if (process.argv[2] === "-i") {
+  insertData();
+} else if (process.argv[2] === "-d") {
+  destroyData();
+}

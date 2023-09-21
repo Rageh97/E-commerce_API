@@ -1,4 +1,5 @@
-const { check } = require("express-validator");
+const { check, body } = require("express-validator");
+const slugify = require("slugify");
 const validatorMiddleware = require("../../Middlewares/validatorMiddleware");
 const CategoryModel = require("../../Models/categoryModel");
 const SubCategoryModel = require("../../Models/subCategoryModel");
@@ -9,7 +10,11 @@ exports.createProductValidator = [
     .notEmpty()
     .withMessage("Product title required")
     .isLength({ min: 2 })
-    .withMessage("Too short Product name"),
+    .withMessage("Too short Product name")
+    .custom((val, { req }) => {
+      req.body.slug = slugify(val);
+      return true;
+    }),
   check("description")
     .notEmpty()
     .withMessage("Product description required")
@@ -92,7 +97,9 @@ exports.createProductValidator = [
             subcategoriesIdInDb.push(subcategory._id.toString());
           });
           if (!val.every((v) => subcategoriesIdInDb.includes(v))) {
-            return Promise.reject(new Error("subcategories not belong to category"));
+            return Promise.reject(
+              new Error("subcategories not belong to category")
+            );
           }
         })
     ),
@@ -117,6 +124,12 @@ exports.getProductValidator = [
 ];
 exports.updateProductValidator = [
   check("id").isMongoId().withMessage("Inavalid Product Id"),
+  body("title")
+    .optional()
+    .custom((val, { req }) => {
+      req.body.slug = slugify(val);
+      return true;
+    }),
   validatorMiddleware,
 ];
 exports.deleteProductValidator = [

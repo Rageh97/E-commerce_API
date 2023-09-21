@@ -14,12 +14,13 @@ const {
   updateSubCategory,
   deleteSubCategory,
   setCategoryIdToBody,
+  createFilterObj,
 } = require("../Controllers/subCategoryController");
 
 router
   .route("/")
   .post(setCategoryIdToBody,createSubCategoryValidator, createSubCategory)
-  .get(getSubCategories);
+  .get(createFilterObj, getSubCategories);
 router
   .route("/:id")
   .get(getSubCategoryValidator, getSpecificSubCategory)

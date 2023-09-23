@@ -17,7 +17,22 @@ const brandSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+// for get, update , get one
+brandSchema.post("init", (doc) => {
+  // return respone of image with url
+  if (doc.image) {
+    const imageUrl = `${process.env.BASE_URL}/brands/${doc.image}`;
+    doc.image = imageUrl;
+  }
+});
+// for create
+brandSchema.post("save", (doc) => {
+  // return respone of image with url
+  if (doc.image) {
+    const imageUrl = `${process.env.BASE_URL}/brands/${doc.image}`;
+    doc.image = imageUrl;
+  }
+});
 //  create model
 const BrandModel = mongoose.model("Brand", brandSchema);
 module.exports = BrandModel;

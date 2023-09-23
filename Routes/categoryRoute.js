@@ -6,6 +6,8 @@ const {
   getSpecificCategory,
   updateCategory,
   deleteCategory,
+  uploadCategoryImage,
+  resizeImage
 } = require("../Controllers/categoryController");
 const {
   getCategoryValidator,
@@ -13,18 +15,21 @@ const {
   updateCategoryValidator,
   deleteCategoryValidator,
 } = require("../Utils/Validators/categoryValidator");
-const subcategoryRoute = require("./subCategoryRoute");
+const subcategoriesRoute = require("./subCategoryRoute");
 
 const router = express.Router();
-router.use("/:categoryId/subcategories", subcategoryRoute);
+
+router.use("/:categoryId/subcategories", subcategoriesRoute);
+
 router
   .route("/")
   .get(getCategory)
-  .post(createCategoryValidator, createCategory);
+  .post(uploadCategoryImage,resizeImage, createCategoryValidator, createCategory);
 router
   .route("/:id")
   .get(getCategoryValidator, getSpecificCategory)
-  .put(updateCategoryValidator, updateCategory)
+  .put(uploadCategoryImage,resizeImage,updateCategoryValidator, updateCategory)
   .delete(deleteCategoryValidator, deleteCategory);
 
 module.exports = router;
+

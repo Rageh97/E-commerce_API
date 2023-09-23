@@ -22,7 +22,7 @@ exports.getBrandValidator = [
 ];
 exports.updateBrandValidator = [
   check("id").isMongoId().withMessage("Inavalid Brand Id"),
-  body("name").custom((val, { req }) => {
+  body("name").optional().custom((val, { req }) => {
     req.body.slug = slugify(val);
     return true;
   }),

@@ -1,8 +1,8 @@
-  const SubCategory = require("../Models/subCategoryModel");
+const SubCategory = require("../Models/subCategoryModel");
 const factory = require("./handlersFactory");
 
 exports.setCategoryIdToBody = (req, res, next) => {
-  // nested route
+  // // Nested route (Create)
   if (!req.body.category) req.body.category = req.params.categoryId;
   next();
 };
@@ -10,7 +10,8 @@ exports.setCategoryIdToBody = (req, res, next) => {
 // @route POST api/v1/subcategories
 // @access private
 exports.createSubCategory = factory.create(SubCategory);
-// nested routes
+// Nested route
+// GET /api/v1/categories/:categoryId/subcategories
 exports.createFilterObj = (req, res, next) => {
   let filterObject = {};
   if (req.params.categoryId) filterObject = { category: req.params.categoryId };

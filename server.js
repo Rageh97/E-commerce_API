@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
@@ -20,6 +21,7 @@ dbConnection();
 const app = new express();
 // middlewares
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "uploads")));
 // mode
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

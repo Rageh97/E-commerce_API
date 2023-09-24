@@ -27,3 +27,16 @@ exports.uploadSingleImage = (fieldName) => {
   const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
   return upload.single(fieldName);
 };
+exports.uploadMixOfImages = (arrOfFields) => {
+  const multerStorage = multer.memoryStorage();
+  const multerFilter = function (req, file, cb) {
+    if (file.mimetype.startsWith("image")) {
+      cb(null, true);
+    } else {
+      cb(new ApiError("Only image allowed", 400), false);
+    }
+  };
+
+  const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+  return upload.fields(arrOfFields)
+};

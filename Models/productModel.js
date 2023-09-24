@@ -41,7 +41,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Product image cover is required"],
     },
-    image: [String],
+    images: [String],
     category: {
       type: mongoose.Schema.ObjectId,
       ref: "Category",
@@ -74,6 +74,39 @@ productSchema.pre(/^find/, function (next) {
     select: "name -_id",
   });
   next();
+});
+
+// for get, update , get one
+productSchema.post("init", (doc) => {
+  // return respone of image with url
+  if (doc.imageCover) {
+    const imageUrl = `${process.env.BASE_URL}/products/${doc.imageCover}`;
+    doc.imageCover = imageUrl;
+  }
+  if (doc.images) {
+    const imageList = [];
+    doc.images.forEach((image) => {
+      const imageUrl = `${process.env.BASE_URL}/products/${image}`;
+      imageList.push(imageUrl);
+    });
+    doc.images = imageList;
+  }
+});
+// for create
+productSchema.post("save", (doc) => {
+  // return respone of image with url
+  if (doc.imageCover) {
+    const imageUrl = `${process.env.BASE_URL}/products/${doc.imageCover}`;
+    doc.imageCover = imageUrl;
+  }
+  if (doc.images) {
+    const imageList = [];
+    doc.images.forEach((image) => {
+      const imageUrl = `${process.env.BASE_URL}/products/${image}`;
+      imageList.push(imageUrl);
+    });
+    doc.images = imageList;
+  }
 });
 const productModel = mongoose.model("Product", productSchema);
 module.exports = productModel;

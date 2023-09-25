@@ -1,20 +1,20 @@
 const express = require("express");
-
 const {
-  createProductValidator,
   getProductValidator,
+  createProductValidator,
   updateProductValidator,
   deleteProductValidator,
-} = require("../Utils/Validators/productValidator");
+} = require("../utils/validators/productValidator");
+
 const {
-  createProduct,
   getProducts,
-  getSpecificProduct,
+  getProduct,
+  createProduct,
   updateProduct,
   deleteProduct,
   uploadProductImages,
   resizeProductImages,
-} = require("../Controllers/productController");
+} = require("../services/productService");
 
 const router = express.Router();
 
@@ -29,7 +29,7 @@ router
   );
 router
   .route("/:id")
-  .get(getProductValidator, getSpecificProduct)
+  .get(getProductValidator, getProduct)
   .put(
     uploadProductImages,
     resizeProductImages,
@@ -37,4 +37,5 @@ router
     updateProduct
   )
   .delete(deleteProductValidator, deleteProduct);
+
 module.exports = router;

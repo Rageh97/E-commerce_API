@@ -1,9 +1,9 @@
 const { check, body } = require("express-validator");
 const slugify = require("slugify");
-const validatorMiddleware = require("../../Middlewares/validatorMiddleware");
-const CategoryModel = require("../../Models/categoryModel");
-const SubCategoryModel = require("../../Models/subCategoryModel");
-const subCategoryModel = require("../../Models/subCategoryModel");
+const validatorMiddleware = require("../../middlewares/validatorMiddleware");
+const CategoryModel = require("../../models/categoryModel");
+const SubCategoryModel = require("../../models/subCategoryModel");
+const subCategoryModel = require("../../models/subCategoryModel");
 
 exports.createProductValidator = [
   check("title")

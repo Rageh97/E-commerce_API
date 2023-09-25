@@ -1,4 +1,4 @@
-//  @des this class is responsible about operation error 
+//  @des this class is responsible about operation error
 // the error that i can predict
 class ApiError extends Error {
   constructor(message, statusCode) {

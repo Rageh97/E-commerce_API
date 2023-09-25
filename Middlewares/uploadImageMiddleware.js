@@ -1,5 +1,5 @@
 const multer = require("multer");
-const ApiError = require("../Utils/apiError");
+const ApiError = require("../utils/apiError");
 
 exports.uploadSingleImage = (fieldName) => {
   // Disk storage
@@ -38,5 +38,5 @@ exports.uploadMixOfImages = (arrOfFields) => {
   };
 
   const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
-  return upload.fields(arrOfFields)
+  return upload.fields(arrOfFields);
 };

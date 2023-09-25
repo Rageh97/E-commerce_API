@@ -34,5 +34,4 @@ brandSchema.post("save", (doc) => {
   }
 });
 //  create model
-const BrandModel = mongoose.model("Brand", brandSchema);
-module.exports = BrandModel;
+module.exports = mongoose.model('Brand', brandSchema);

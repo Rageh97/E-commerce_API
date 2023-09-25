@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
-// const ApiFeatures = require("../Utils/apiFeatures");
-const ApiError = require("../Utils/apiError");
-const ApiFeatures = require("../Utils/apiFeatures");
+const ApiError = require("../utils/apiError");
+const ApiFeatures = require("../utils/apiFeatures");
 
 exports.create = (Model) => {
   asyncHandler(async (req, res) => {
@@ -9,7 +8,7 @@ exports.create = (Model) => {
     res.status(201).json({ data: newDocument });
   });
 };
-exports.getAll = (Model, modelName='') => {
+exports.getAll = (Model, modelName = "") => {
   asyncHandler(async (req, res) => {
     let filter = {};
     if (req.filterObj) {

@@ -10,13 +10,13 @@ const {
   deleteUser,
   resizeImage,
   uploadUserImage,
-} = require("../Controllers/userController");
+} = require("../services/userService");
 const {
   getUserValidator,
   createUserValidator,
   updateUserValidator,
   deleteUserValidator,
-} = require("../Utils/Validators/userValidator");
+} = require("../utils/validators/userValidator");
 
 router
   .route("/")

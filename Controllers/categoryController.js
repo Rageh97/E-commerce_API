@@ -29,7 +29,7 @@ exports.createCategory = factory.create(CategoryModel);
 // @desc get list of categories
 // @route GET api/v1/categories
 // @access public
-exports.getCategory = factory.getAll(CategoryModel);
+exports.getCategories = factory.getAll(CategoryModel);
 // @desc get specific category
 // @route GET api/v1/categories/:id
 // @access public

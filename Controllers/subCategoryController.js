@@ -6,10 +6,7 @@ exports.setCategoryIdToBody = (req, res, next) => {
   if (!req.body.category) req.body.category = req.params.categoryId;
   next();
 };
-// @desc create subcategory
-// @route POST api/v1/subcategories
-// @access private
-exports.createSubCategory = factory.create(SubCategory);
+
 // Nested route
 // GET /api/v1/categories/:categoryId/subcategories
 exports.createFilterObj = (req, res, next) => {
@@ -18,6 +15,11 @@ exports.createFilterObj = (req, res, next) => {
   req.filterObj = filterObject;
   next();
 };
+// @desc create subcategory
+// @route POST api/v1/subcategories
+// @access private
+exports.createSubCategory = factory.create(SubCategory);
+
 // @desc get list of subcategories
 // @route GET api/v1/subcategories
 // @access public
@@ -25,7 +27,7 @@ exports.getSubCategories = factory.getAll(SubCategory);
 // @desc get specific subcategory
 // @route GET api/v1/subcategories/:id
 // @access public
-exports.getSpecificSubCategory = factory.create(SubCategory);
+exports.getSpecificSubCategory = factory.getOne(SubCategory);
 // @desc update specific subcategory
 // @route PUT api/v1/subcategories/:id
 // @access private

@@ -22,10 +22,12 @@ exports.getCategoryValidator = [
 ];
 exports.updateCategoryValidator = [
   check("id").isMongoId().withMessage("Inavalid Category Id"),
-  body("name").optional().custom((val, { req }) => {
-    req.body.slug = slugify(val);
-    return true;
-  }),
+  body("name")
+    .optional()
+    .custom((val, { req }) => {
+      req.body.slug = slugify(val);
+      return true;
+    }),
   validatorMiddleware,
 ];
 exports.deleteCategoryValidator = [

@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+// eslint-disable-next-line import/no-extraneous-dependencies
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
@@ -36,5 +38,11 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+// midddleware to hashing password before saving it
+userSchema.pre("save", async function (next) {
+  if(!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
 const UserModel = mongoose.model("User", userSchema);
 module.exports = UserModel;

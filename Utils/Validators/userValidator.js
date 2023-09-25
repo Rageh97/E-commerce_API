@@ -1,5 +1,7 @@
 const { check, body } = require("express-validator");
 const slugify = require("slugify");
+// eslint-disable-next-line import/no-extraneous-dependencies
+const bcrypt = require("bcryptjs");
 const validatorMiddleware = require("../../middlewares/validatorMiddleware");
 const UserModel = require("../../models/userModel");
 
@@ -59,6 +61,37 @@ exports.updateUserValidator = [
     .optional()
     .custom((val, { req }) => {
       req.body.slug = slugify(val);
+      return true;
+    }),
+  validatorMiddleware,
+];
+exports.changeUserPasswordValidator = [
+  body("currentPassword")
+    .notEmpty()
+    .withMessage("you must enter your current password"),
+  body("passwordConfirm")
+    .notEmpty()
+    .withMessage("you must enter the password confirm"),
+  body("password")
+    .notEmpty()
+    .withMessage("you must enter the new password ")
+    .custom(async (password, { req }) => {
+      // 1) verify the current password
+      const user = await UserModel.findById(req.params.id);
+      if (!user) {
+        throw new Error("there is no user for this id");
+      }
+      const isCorrectPassword = await bcrypt.compare(
+        req.body.currentPassword,
+        user.password
+      );
+      if (!isCorrectPassword) {
+        throw new Error("Incorrect current password");
+      }
+      // 1) verify password confirm
+      if (password !== req.body.passwordConfirm) {
+        throw new Error("Password confirmation is incorrect");
+      }
       return true;
     }),
   validatorMiddleware,

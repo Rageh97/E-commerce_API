@@ -31,8 +31,15 @@ exports.createUserValidator = [
     .notEmpty()
     .withMessage("User required")
     .isLength({ min: 6 })
-    .withMessage("password must be at least 6 characters"),
+    .withMessage("password must be at least 6 characters")
+    .custom((password, { req }) => {
+      if (password !== req.body.passwordConfirm) {
+        throw new Error("Password confirmation is incorrect");
+      }
+      return true;
+    }),
 
+  check("passwordConfirm").notEmpty().withMessage("password confirm required"),
   check("phone")
     .optional()
     .isMobilePhone(["ar-EG", "ar-SA"])

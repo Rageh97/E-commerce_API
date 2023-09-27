@@ -63,6 +63,25 @@ exports.updateUserValidator = [
       req.body.slug = slugify(val);
       return true;
     }),
+  check("email")
+    .notEmpty()
+    .withMessage("User required")
+    .isEmail()
+    .withMessage("Invalid email address")
+    .custom((val) =>
+      UserModel.findOne({ email: val }).then((user) => {
+        if (user) {
+          return Promise.reject(new Error("Email already in user"));
+        }
+      })
+    ),
+  check("phone")
+    .optional()
+    .isMobilePhone(["ar-EG", "ar-SA"])
+    .withMessage("Phone number only accepted Egypt numbers and saudi arabia"),
+
+  check("profileImg").optional(),
+  check("role").optional(),
   validatorMiddleware,
 ];
 exports.changeUserPasswordValidator = [

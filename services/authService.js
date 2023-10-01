@@ -39,6 +39,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   res.status(200).json({ data: user, token });
 });
 
+// @desc make sure the user is authenticated
 exports.protect = asyncHandler(async (req, res, next) => {
   // 1) check if token exist and if get it.
   let token;
@@ -75,3 +76,13 @@ exports.protect = asyncHandler(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
+
+// @desc
+exports.allowedTo = (...roles) =>
+  asyncHandler(async (req, res, next) => {
+    //  1) access roles
+    //  1) access registered user (req.user.role)
+    if (!roles.includes(req.user.roles)) {
+      return next(new ApiError("You are not allowed to access this page", 403));
+    }
+  });

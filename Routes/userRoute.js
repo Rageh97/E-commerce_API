@@ -1,7 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
-
+const authService = require("../services/authService");
 const {
   getSpecificUser,
   getUsers,
@@ -27,12 +27,34 @@ router.put(
 );
 router
   .route("/")
-  .get(getUsers)
-  .post(uploadUserImage, resizeImage, createUserValidator, createUser);
+  .get(authService.protect, authService.allowedTo("admin", "manager"), getUsers)
+  .post(
+    authService.protect,
+    authService.allowedTo("admin"),
+    uploadUserImage,
+    resizeImage,
+    createUserValidator,
+    createUser
+  );
 router
   .route("/:id")
-  .get(getUserValidator, getSpecificUser)
-  .put(uploadUserImage, resizeImage, updateUserValidator, updateUser)
-  .delete(deleteUserValidator, deleteUser);
+  .get(
+    authService.protect,
+    authService.allowedTo("admin"),
+    getUserValidator,
+    getSpecificUser
+  )
+  .put(
+    authService.protect,
+    uploadUserImage,
+    resizeImage,
+    updateUserValidator,
+    updateUser
+  )
+  .delete(
+    authService.allowedTo("admin"),
+    deleteUserValidator,
+    deleteUser
+  );
 
 module.exports = router;

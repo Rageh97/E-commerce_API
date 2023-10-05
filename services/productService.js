@@ -59,7 +59,7 @@ exports.getProducts = factory.getAll(Product, "Products");
 // @desc get specific product
 // @route GET api/v1/products/:id
 // @access public
-exports.getProduct = factory.create(Product);
+exports.getProduct = factory.create(Product,"reviews");
 // @desc update product
 // @route PUT api/v1/products/:id
 // @access private

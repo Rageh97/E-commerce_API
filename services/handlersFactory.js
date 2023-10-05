@@ -29,10 +29,17 @@ exports.getAll = (Model, modelName = "") => {
       .json({ results: documents.length, paginationResult, data: documents });
   });
 };
-exports.getOne = (Model) => {
+exports.getOne = (Model, populationOpt) => {
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    const document = await Model.findById(id);
+    //1- build query so delete await
+
+    let query = Model.findById(id);
+    if (populationOpt) {
+      query = query.populate(populationOpt);
+    }
+    // 2- excute query
+    const document = await query;
     if (!document) {
       // res.status(404).json({ msg: `No category for this id ${id}` });
       return next(new ApiError(`No document for this id ${id}`, 404));
